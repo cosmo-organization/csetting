@@ -48,7 +48,11 @@ SETTING_API void int_to_byte(const int __in_integer,char __out_pchar[4]){
 	
 }
 SETTING_API void short_to_byte(const short __in_short,char __out_pchar[2]){
-	
+	char little;
+	is_little(&little);
+	if (little){
+		
+	}
 }
 SETTING_API void double_to_byte(const double __in_double,char __out_pchar[8]){
 	

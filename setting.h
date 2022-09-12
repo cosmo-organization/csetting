@@ -41,7 +41,7 @@ typedef struct __KTVDP{ //key, type, value and description pair
 		int int_val;
 		short short_val;
 		void* null_val;
-		double double_Val;
+		double double_val;
 		unsigned char bool_val;
 		float float_val;
 	}value;
