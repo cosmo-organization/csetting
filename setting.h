@@ -1,6 +1,5 @@
 #ifndef SETTING_H
 #define SETTING_H
-
 /**
 *@author Sonu Aryan cosmo-developer@github.com
 */
