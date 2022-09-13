@@ -162,6 +162,23 @@ SETTING_API void long_long_to_bytes(const long long __in_long_long,char __out_pc
 }
 
 
+SETTING_API void bytes_to_int(const char __in_pchar[4],int* __out_pint){
+	
+}
+SETTING_API void bytes_to_short(const char __in_pchar[2],short* __out_pshort){
+	
+}
+SETTING_API void bytes_to_double(const char __in_pchar[8],double* __out_pdouble){
+	
+}
+SETTING_API void bytes_to_float(const char __in_pchar[4],float* __out_pfloat){
+	
+}
+SETTING_API void bytes_to_long_long(const char __in_pchar[8],long long* __out_plong_long){
+	
+}
+
+
 SETTING_API void create_ktvdp(lpktvdp __out_ktvdp){
 	(*__out_ktvdp)=(pktvdp)malloc(sizeof(ktvdp));
 	(*__out_ktvdp)->key=NULL;

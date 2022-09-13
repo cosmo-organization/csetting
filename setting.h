@@ -19,19 +19,38 @@
 #define FT_EMPTY 6
 #define FT_BOOLEAN 7
 
+#if defined(_MSC_VER)
+    #define EXPORT __declspec(dllexport)
+    #define IMPORT __declspec(dllimport)
+#elif defined(__GNUC__)
+    #define EXPORT __attribute__((visibility("default")))
+    #define IMPORT
+#else
+    #define EXPORT
+    #define IMPORT
+    #pragma warning Unknown dynamic link import/export semantics.
+#endif
+
 
 #ifdef SETTING_API_BUILD_MODE
-#ifdef WIN32
-#define SETTING_API __declspec(dllexport)
-#else
-#define SETTING_API
+	#ifdef WIN32
+		#define SETTING_API EXPORT
+	#else
+		#define SETTING_API	EXPORT
 #endif
 #else
-#ifdef WIN32
-#define SETTING_API __declspec(dllimport)
-#else
-#define SETTING_API
+	#ifdef WIN32
+		#define SETTING_API IMPORT
+	#else
+		#define SETTING_API	IMPORT
+	#endif
 #endif
+
+
+#ifdef __cplusplus
+	#define EXTERN_C extern "C"
+#else
+	#define EXTERN_C
 #endif
 
 typedef struct __KTVDP{ //key, type, value and description pair
@@ -63,26 +82,25 @@ typedef struct __SETTING{
 	psetting_profile setting_profile_table;
 }setting,*psetting,**lpsetting;
 
-SETTING_API void copy_mem(void* dest,const void* src,size_t start,size_t len);
-SETTING_API void is_little(char* pis_little);
+
+EXTERN_C SETTING_API void copy_mem(void* dest,const void* src,size_t start,size_t len);
+EXTERN_C SETTING_API void is_little(char* pis_little);
 
 //All take any type of byte order primitive but give out only big endian byte order in __out_pchar
-SETTING_API void int_to_bytes(const int __in_integer,char __out_pchar[4]);
-SETTING_API void short_to_bytes(const short __in_short,char __out_pchar[2]);
-SETTING_API void double_to_bytes(const double __in_double,char __out_pchar[8]);
-SETTING_API void float_to_bytes(const float __in_float,char __out_pchar[4]);
-SETTING_API void long_long_to_bytes(const long long __in_long_long,char __out_pchar[8]);
+EXTERN_C SETTING_API void int_to_bytes(const int __in_integer,char __out_pchar[4]);
+EXTERN_C SETTING_API void short_to_bytes(const short __in_short,char __out_pchar[2]);
+EXTERN_C SETTING_API void double_to_bytes(const double __in_double,char __out_pchar[8]);
+EXTERN_C SETTING_API void float_to_bytes(const float __in_float,char __out_pchar[4]);
+EXTERN_C SETTING_API void long_long_to_bytes(const long long __in_long_long,char __out_pchar[8]);
 
 //Take big endian order byte in __in_pchar and give out machine specific byte ordered primitive
-SETTING_API void bytes_to_int(const char __in_pchar[4],int* __out_pint);
-SETTING_API void bytes_to_short(const char __in_pchar[2],short* __out_pshort);
-SETTING_API void bytes_to_double(const char __in_pchar[8],double* __out_pdouble);
-SETTING_API void bytes_to_float(const char __in_pchar[4],float* __out_pfloat);
-SETTING_API void bytes_to_long_long(const char __in_pchar[8],long long* __out_plong_long);
-
-
-
-SETTING_API void create_ktvdp(lpktvdp __out_ktvdp);
-SETTING_API void fill_ktvdp(pktvdp __in_ktvdp,short __in_type,const void* __in_value,const char* __in_description);
+EXTERN_C SETTING_API void bytes_to_int(const char __in_pchar[4],int* __out_pint);
+EXTERN_C SETTING_API void bytes_to_short(const char __in_pchar[2],short* __out_pshort);
+EXTERN_C SETTING_API void bytes_to_double(const char __in_pchar[8],double* __out_pdouble);
+EXTERN_C SETTING_API void bytes_to_float(const char __in_pchar[4],float* __out_pfloat);
+EXTERN_C SETTING_API void bytes_to_long_long(const char __in_pchar[8],long long* __out_plong_long);
+ 
+EXTERN_C SETTING_API void create_ktvdp(lpktvdp __out_ktvdp);
+EXTERN_C SETTING_API void fill_ktvdp(pktvdp __in_ktvdp,short __in_type,const void* __in_value,const char* __in_description);
 
 #endif
