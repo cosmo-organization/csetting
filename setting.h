@@ -4,6 +4,8 @@
 *@author Sonu Aryan cosmo-developer@github.com
 */
 
+#include <stddef.h>
+
 #define MAGIC 0x534f4e55
 #define MAJOR_VER 0
 #define MINOR_VER 1

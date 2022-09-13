@@ -3,7 +3,6 @@
 #include <stdio.h>
 
 #define SETTING_API_BUILD_MODE
-#include <stddef.h>
 #include "setting.h"
 
 
