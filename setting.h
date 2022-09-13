@@ -6,7 +6,7 @@
 
 #include <stddef.h>
 
-#define MAGIC 0x636F736D6F646576
+#define MAGIC 0x636F736D6F6F7267
 #define MAJOR_VER 0
 #define MINOR_VER 1
 
