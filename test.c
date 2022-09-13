@@ -2,7 +2,6 @@
 #include <stdio.h>
 
 int main(const int argc,const char** argv){
-	int data=0xABCDEFFE;
-	char buff[4];
+	
 	return 0;
 }

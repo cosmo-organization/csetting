@@ -6,7 +6,7 @@
 
 #include <stddef.h>
 
-#define MAGIC 0x534f4e55
+#define MAGIC 0x636F736D6F646576
 #define MAJOR_VER 0
 #define MINOR_VER 1
 
@@ -56,7 +56,7 @@ typedef struct __SETTING_PROFILE{
 }setting_profile,*psetting_profile,**lpsetting_profile;
 
 typedef struct __SETTING{
-	unsigned short magic;
+	unsigned long long magic;
 	unsigned char maj_ver;
 	unsigned char min_ver;
 	unsigned int n_profile_table;
@@ -69,6 +69,8 @@ SETTING_API void int_to_byte(const int __in_integer,char __out_pchar[4]);
 SETTING_API void short_to_byte(const short __in_short,char __out_pchar[2]);
 SETTING_API void double_to_byte(const double __in_double,char __out_pchar[8]);
 SETTING_API void float_to_byte(const float __in_float,char __out_pchar[4]);
+SETTING_API void long_long_to_byte(const long long __in_long_long,char __out_pchar[8]);
+
 
 
 SETTING_API void create_ktvdp(lpktvdp __out_ktvdp);

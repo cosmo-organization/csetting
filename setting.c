@@ -23,7 +23,7 @@ SETTING_API void is_little(char* pis_little){
 SETTING_API void int_to_byte(const int __in_integer,char __out_pchar[4]){
 	char little;
 	is_little(&little);
-	char* buff=(char*)((void*)&__in_integer);
+	const char* buff=(const char*)((const void*)&__in_integer);
 	/*
 	if (little){
 		__out_pchar[0]=buff[3];
@@ -49,22 +49,124 @@ SETTING_API void int_to_byte(const int __in_integer,char __out_pchar[4]){
 }
 SETTING_API void short_to_byte(const short __in_short,char __out_pchar[2]){
 	char little;
+	const char* buff=(const char*)((const void*)&__in_short);
 	is_little(&little);
+	/*
 	if (little){
-		
+		__out_pchar[0]=buff[1];
+		__out_pchar[1]=buff[0];
+		return;
 	}
-}
-SETTING_API void double_to_byte(const double __in_double,char __out_pchar[8]){
+	__out_pchar[1]=buff[1];
+	__out_pchar[0]=buff[0];*/
 	
-}
-SETTING_API void float_to_byte(const float __in_float,char __out_pchar[4]){
+	//Reduced code branch less code
 	
+	__out_pchar[1-little]=buff[1];
+	__out_pchar[1*little]=buff[0];
 }
 
+SETTING_API void double_to_byte(const double __in_double,char __out_pchar[8]){
+	union{
+		double double_val;
+		char byte_array[8];
+	}union_double_char_array_size_8;
+	
+	union_double_char_array_size_8.double_val=__in_double;
+	
+	char little;
+	is_little(&little);
+	
+	if (little){
+		__out_pchar[0]=union_double_char_array_size_8.byte_array[7];
+		__out_pchar[1]=union_double_char_array_size_8.byte_array[6];
+		__out_pchar[2]=union_double_char_array_size_8.byte_array[5];
+		__out_pchar[3]=union_double_char_array_size_8.byte_array[4];
+		__out_pchar[4]=union_double_char_array_size_8.byte_array[3];
+		__out_pchar[5]=union_double_char_array_size_8.byte_array[2];
+		__out_pchar[6]=union_double_char_array_size_8.byte_array[1];
+		__out_pchar[7]=union_double_char_array_size_8.byte_array[0];	
+		return;
+	}
+	
+	__out_pchar[7]=union_double_char_array_size_8.byte_array[7];
+	__out_pchar[6]=union_double_char_array_size_8.byte_array[6];
+	__out_pchar[5]=union_double_char_array_size_8.byte_array[5];
+	__out_pchar[4]=union_double_char_array_size_8.byte_array[4];
+	__out_pchar[3]=union_double_char_array_size_8.byte_array[3];
+	__out_pchar[2]=union_double_char_array_size_8.byte_array[2];
+	__out_pchar[1]=union_double_char_array_size_8.byte_array[1];
+	__out_pchar[0]=union_double_char_array_size_8.byte_array[0];
+	
+	//Reduced or branchless code may be latter
+}
+SETTING_API void float_to_byte(const float __in_float,char __out_pchar[4]){
+	char little;
+	is_little(&little);
+	union{
+		float float_val;
+		char byte_array[4];
+	}union_float_char_array_size_4;
+	
+	union_float_char_array_size_4.float_val=__in_float;
+	
+	if (little){
+		__out_pchar[0]=union_float_char_array_size_4.byte_array[3];
+		__out_pchar[1]=union_float_char_array_size_4.byte_array[2];
+		__out_pchar[2]=union_float_char_array_size_4.byte_array[1];
+		__out_pchar[3]=union_float_char_array_size_4.byte_array[0];
+		return;
+	}
+	
+	__out_pchar[3]=union_float_char_array_size_4.byte_array[3];
+	__out_pchar[2]=union_float_char_array_size_4.byte_array[2];
+	__out_pchar[1]=union_float_char_array_size_4.byte_array[1];
+	__out_pchar[0]=union_float_char_array_size_4.byte_array[0];
+	
+	//Reduced or branchless code may be latter
+}
+
+SETTING_API void long_long_to_byte(const long long __in_long_long,char __out_pchar[8]){
+	union{
+		long long long_long_val;
+		char byte_array[8];
+	}union_long_long_char_array_size_8;
+	
+	union_long_long_char_array_size_8.long_long_val=__in_long_long;
+	
+	char little;
+	is_little(&little);
+	
+	if (little){
+		__out_pchar[0]=union_long_long_char_array_size_8.byte_array[7];
+		__out_pchar[1]=union_long_long_char_array_size_8.byte_array[6];
+		__out_pchar[2]=union_long_long_char_array_size_8.byte_array[5];
+		__out_pchar[3]=union_long_long_char_array_size_8.byte_array[4];
+		__out_pchar[4]=union_long_long_char_array_size_8.byte_array[3];
+		__out_pchar[5]=union_long_long_char_array_size_8.byte_array[2];
+		__out_pchar[6]=union_long_long_char_array_size_8.byte_array[1];
+		__out_pchar[7]=union_long_long_char_array_size_8.byte_array[0];	
+		return;
+	}
+	
+	__out_pchar[7]=union_long_long_char_array_size_8.byte_array[7];
+	__out_pchar[6]=union_long_long_char_array_size_8.byte_array[6];
+	__out_pchar[5]=union_long_long_char_array_size_8.byte_array[5];
+	__out_pchar[4]=union_long_long_char_array_size_8.byte_array[4];
+	__out_pchar[3]=union_long_long_char_array_size_8.byte_array[3];
+	__out_pchar[2]=union_long_long_char_array_size_8.byte_array[2];
+	__out_pchar[1]=union_long_long_char_array_size_8.byte_array[1];
+	__out_pchar[0]=union_long_long_char_array_size_8.byte_array[0];
+	
+	//Reduced or branchless code may be latter
+}
 
 
 SETTING_API void create_ktvdp(lpktvdp __out_ktvdp){
 	(*__out_ktvdp)=(pktvdp)malloc(sizeof(ktvdp));
+	(*__out_ktvdp)->key=NULL;
+	(*__out_ktvdp)->field_type=FT_NULL;
+	(*__out_ktvdp)->description=NULL;
 }
 
 
