@@ -163,7 +163,8 @@ SETTING_API void long_long_to_bytes(const long long __in_long_long,char __out_pc
 
 
 SETTING_API void bytes_to_int(const char __in_pchar[4],int* __out_pint){
-	
+	union{
+	}
 }
 SETTING_API void bytes_to_short(const char __in_pchar[2],short* __out_pshort){
 	
