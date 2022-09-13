@@ -20,7 +20,7 @@ SETTING_API void is_little(char* pis_little){
 	(*pis_little)=((char*)((void*)&check_byte))[0]&0x01;
 }
 
-SETTING_API void int_to_byte(const int __in_integer,char __out_pchar[4]){
+SETTING_API void int_to_bytes(const int __in_integer,char __out_pchar[4]){
 	char little;
 	is_little(&little);
 	const char* buff=(const char*)((const void*)&__in_integer);
@@ -47,7 +47,7 @@ SETTING_API void int_to_byte(const int __in_integer,char __out_pchar[4]){
 	__out_pchar[3*little]=buff[0];
 	
 }
-SETTING_API void short_to_byte(const short __in_short,char __out_pchar[2]){
+SETTING_API void short_to_bytes(const short __in_short,char __out_pchar[2]){
 	char little;
 	const char* buff=(const char*)((const void*)&__in_short);
 	is_little(&little);
@@ -66,7 +66,7 @@ SETTING_API void short_to_byte(const short __in_short,char __out_pchar[2]){
 	__out_pchar[1*little]=buff[0];
 }
 
-SETTING_API void double_to_byte(const double __in_double,char __out_pchar[8]){
+SETTING_API void double_to_bytes(const double __in_double,char __out_pchar[8]){
 	union{
 		double double_val;
 		char byte_array[8];
@@ -100,7 +100,7 @@ SETTING_API void double_to_byte(const double __in_double,char __out_pchar[8]){
 	
 	//Reduced or branchless code may be latter
 }
-SETTING_API void float_to_byte(const float __in_float,char __out_pchar[4]){
+SETTING_API void float_to_bytes(const float __in_float,char __out_pchar[4]){
 	char little;
 	is_little(&little);
 	union{
@@ -126,7 +126,7 @@ SETTING_API void float_to_byte(const float __in_float,char __out_pchar[4]){
 	//Reduced or branchless code may be latter
 }
 
-SETTING_API void long_long_to_byte(const long long __in_long_long,char __out_pchar[8]){
+SETTING_API void long_long_to_bytes(const long long __in_long_long,char __out_pchar[8]){
 	union{
 		long long long_long_val;
 		char byte_array[8];
