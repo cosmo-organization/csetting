@@ -5,6 +5,7 @@
 */
 
 #include <stddef.h>
+#include "endianess.h"
 
 #define MAGIC 0x636F736D6F6F7267
 #define MAJOR_VER 0
@@ -18,14 +19,6 @@
 #define FT_NULL 5
 #define FT_EMPTY 6
 #define FT_BOOLEAN 7
-
-#if _MSC_VER
-#	define __BYTE_ORDER 1
-#	define __LITTLE_ENDIAN 1
-#	define __BIG_ENDIAN 0
-#else
-#pragma warning Jack
-#endif
 
 
 #if defined(_MSC_VER) || defined(WIN32)
@@ -58,23 +51,7 @@ typedef unsigned char Status;
 #define Status_OK	1
 #define Status_FAIL	0
 
-#if defined(__BYTE_ORDER) && __BYTE_ORDER == __BIG_ENDIAN || \
-    defined(__BIG_ENDIAN__) || \
-    defined(__ARMEB__) || \
-    defined(__THUMBEB__) || \
-    defined(__AARCH64EB__) || \
-    defined(_MIBSEB) || defined(__MIBSEB) || defined(__MIBSEB__)
-#define _BE_ 1
-#elif defined(__BYTE_ORDER) && __BYTE_ORDER == __LITTLE_ENDIAN || \
-    defined(__LITTLE_ENDIAN__) || \
-    defined(__ARMEL__) || \
-    defined(__THUMBEL__) || \
-    defined(__AARCH64EL__) || \
-    defined(_MIPSEL) || defined(__MIPSEL) || defined(__MIPSEL__)
-#define _LE_ 1
-#else
-#error "I don't know what architecture this is!"
-#endif
+
 
 typedef struct __KTVDP { //key, type, value and description pair
 	char* key;
@@ -92,9 +69,10 @@ typedef struct __KTVDP { //key, type, value and description pair
 }ktvdp, * pktvdp, ** lpktvdp;
 
 typedef struct __SETTING_PROFILE {
-	char* profile_name; //Reserved profile_name length to 256
+	unsigned char profile_name_size;
+	char* profile_name; //max profile_name length to 250
 	unsigned int n_rows;
-	pktvdp field_value_table;
+	lpktvdp field_value_table;
 }setting_profile, * psetting_profile, ** lpsetting_profile;
 
 typedef struct __SETTING {
@@ -102,7 +80,7 @@ typedef struct __SETTING {
 	unsigned char maj_ver;
 	unsigned char min_ver;
 	unsigned int n_profile_table;
-	psetting_profile setting_profile_table;
+	lpsetting_profile setting_profile_table;
 }setting, * psetting, ** lpsetting;
 
 
@@ -124,6 +102,7 @@ EXTERN_C SETTING_API Status bytes_to_float(const char __in_pchar[4], float* __ou
 EXTERN_C SETTING_API Status bytes_to_long_long(const char __in_pchar[8], long long* __out_plong_long);
 
 EXTERN_C SETTING_API Status create_ktvdp(lpktvdp __out_ktvdp);
+EXTERN_C SETTING_API Status create_setting_profile(const char* __in_profile_name,lpsetting_profile __out_setting_profile);
 EXTERN_C SETTING_API Status fill_ktvdp(pktvdp __in_ktvdp, short __in_type, const void* __in_value, const char* __in_description);
 
 #endif
