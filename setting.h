@@ -102,7 +102,8 @@ EXTERN_C SETTING_API Status bytes_to_float(const char __in_pchar[4], float* __ou
 EXTERN_C SETTING_API Status bytes_to_long_long(const char __in_pchar[8], long long* __out_plong_long);
 
 EXTERN_C SETTING_API Status create_ktvdp(lpktvdp __out_ktvdp);
-EXTERN_C SETTING_API Status create_setting_profile(const char* __in_profile_name,lpsetting_profile __out_setting_profile);
 EXTERN_C SETTING_API Status fill_ktvdp(pktvdp __in_ktvdp, short __in_type, const void* __in_value, const char* __in_description);
+
+EXTERN_C SETTING_API Status create_setting_profile(const char* __in_profile_name,lpsetting_profile __out_setting_profile);
 
 #endif
