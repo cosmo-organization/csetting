@@ -11,14 +11,14 @@
 #define MAJOR_VER 0
 #define MINOR_VER 1
 
-#define FT_STRING 0
-#define FT_INTEGER 1
-#define FT_SHORT 2
-#define FT_FLOAT 3
-#define FT_DOUBLE 4
-#define FT_NULL 5
-#define FT_EMPTY 6
-#define FT_BOOLEAN 7
+#define FT_STRING 0xab
+#define FT_INTEGER 0xbc
+#define FT_SHORT 0xcd
+#define FT_FLOAT 0xde
+#define FT_DOUBLE 0xef
+#define FT_NULL 0xba
+#define FT_EMPTY 0xcb
+#define FT_BOOLEAN 0xed
 
 
 #if defined(_MSC_VER) || defined(WIN32)
@@ -54,6 +54,7 @@ typedef unsigned char Status;
 
 
 typedef struct __KTVDP { //key, type, value and description pair
+	unsigned char key_size;
 	char* key;
 	unsigned short field_type;
 	union {
@@ -79,12 +80,12 @@ typedef struct __SETTING {
 	unsigned long long magic;
 	unsigned char maj_ver;
 	unsigned char min_ver;
-	unsigned int n_profile_table;
+	unsigned int n_rows;
 	lpsetting_profile setting_profile_table;
 }setting, * psetting, ** lpsetting;
 
 
-EXTERN_C SETTING_API Status copy_mem(void* dest, const void* src, size_t start, size_t len);
+EXTERN_C SETTING_API Status copy_mem(void* dest, const void* src, size_t start, size_t len,unsigned dest_start);
 EXTERN_C SETTING_API Status is_little(char* pis_little);
 
 //All take any type of byte order primitive but give out only big endian byte order in __out_pchar
@@ -102,8 +103,13 @@ EXTERN_C SETTING_API Status bytes_to_float(const char __in_pchar[4], float* __ou
 EXTERN_C SETTING_API Status bytes_to_long_long(const char __in_pchar[8], long long* __out_plong_long);
 
 EXTERN_C SETTING_API Status create_ktvdp(lpktvdp __out_ktvdp);
-EXTERN_C SETTING_API Status fill_ktvdp(pktvdp __in_ktvdp, short __in_type, const void* __in_value, const char* __in_description);
+EXTERN_C SETTING_API Status fill_ktvdp(pktvdp __in_ktvdp,const char* __in_key, short __in_type, const void* __in_value, const char* __in_description);
 
 EXTERN_C SETTING_API Status create_setting_profile(const char* __in_profile_name,lpsetting_profile __out_setting_profile);
+EXTERN_C SETTING_API Status add_ktvdp(const psetting_profile __in_setting_profile,const pktvdp __in_ktvdp);
 
+EXTERN_C SETTING_API Status create_setting(lpsetting __out_setting);
+EXTERN_C SETTING_API Status add_setting_profile(const psetting __in_setting,const psetting_profile __in_setting_profile);
+
+EXTERN_C SETTING_API Status serialize_ktvdp(const pktvdp __in_ktvdp,char** __out_pchar,unsigned int* __out_puint);
 #endif
