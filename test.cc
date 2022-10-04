@@ -38,18 +38,19 @@ int main(const int argc,const char** argv){
 	int value=0x41424344;
 	const char* testKey="hi everyone how are you peoples";
 	const size_t testKeySize=strlen(testKey);
-	const char* description="This is a long description about the field and data";
-	const short type=FT_INTEGER;
-	if (!fill_ktvdp(test_ktvdp,testKey,type,(const void*)&value,description)){
+	const char* description="This is a long description about the field and";
+	const short type=FT_STRING;
+	const char* string_val="charles";
+	if (!fill_ktvdp(test_ktvdp,testKey,type,(const void*)string_val,description)){
 		std::cerr<<"Failed to fill ktvdp!"<<std::endl;
 		return 0x2;
 	}
 	
-	if (test_ktvdp->key_size!=testKeySize||test_ktvdp->field_type!=type||strcmp(description,test_ktvdp->description)!=0||test_ktvdp->value.int_val!=value){
+	if (test_ktvdp->key_size!=testKeySize||test_ktvdp->field_type!=type||strcmp(description,test_ktvdp->description)!=0||strcmp(string_val,test_ktvdp->value.string_val)!=0){
 		std::cout<<(test_ktvdp->key_size!=testKeySize)<<std::endl;
 		std::cout<<(test_ktvdp->field_type!=type)<<std::endl;
 		std::cout<<(strcmp(description,test_ktvdp->description)!=0)<<std::endl;
-		std::cout<<(test_ktvdp->value.int_val!=value)<<std::endl;
+		std::cout<<(strcmp(test_ktvdp->value.string_val,string_val)!=0)<<std::endl;
 		
 		std::cerr<<"ktvdp is not created correctly!"<<std::endl;
 		return 0x3;
