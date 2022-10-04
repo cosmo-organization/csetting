@@ -11,6 +11,18 @@ bool compare_array(T* array1,size_t sizeofarray1,T* array2,size_t sizeofarray2){
 	return true;
 }
 
+FILE* secure_open(const char* filename,const char* permission){
+	FILE* file=NULL;
+	
+#if defined(_MSC_VER)
+	fopen_s(&file,filename,permission);
+#else
+	file=fopen(filename,permission);
+#endif
+	
+	return file;
+}
+
 bool compare_bytes(const char* array1,const char* array2){
 	return strcmp(array1,array2)==0;
 }
@@ -52,7 +64,7 @@ int main(const int argc,const char** argv){
 	
 	FILE* file=NULL;
 	const char* filename="serialized_ktvdp.ktvdp";
-	fopen_s(&file,filename,"w");
+	file=secure_open(filename,"w");
 	if (file==NULL){
 		std::cerr<<"Failed to open file "<<filename<<" for write"<<std::endl;
 		return 0x5;
