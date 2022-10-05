@@ -164,16 +164,13 @@ SETTING_API Status bytes_to_short(const char __in_pchar[2],short* __out_pshort){
 }
 SETTING_API Status bytes_to_double(const char __in_pchar[8],double* __out_pdouble){
 	
-	
 	return Status_OK;
 }
 SETTING_API Status bytes_to_float(const char __in_pchar[4],float* __out_pfloat){
 	
-	
 	return Status_OK;
 }
 SETTING_API Status bytes_to_long_long(const char __in_pchar[8],long long* __out_plong_long){
-	
 	
 	return Status_OK;
 }
@@ -264,7 +261,6 @@ SETTING_API Status fill_ktvdp(pktvdp __in_ktvdp,const char* __in_key,short __in_
 	copy_mem(__in_ktvdp->key,__in_key,0,key_size+1,0);
 	
 	//printf("%s==%s %d\n",__in_ktvdp->key,__in_key,strcmp(__in_ktvdp->key,__in_key));
-	
 
 	switch(__in_type){
 		case FT_STRING:{
@@ -284,6 +280,37 @@ SETTING_API Status fill_ktvdp(pktvdp __in_ktvdp,const char* __in_key,short __in_
 		case FT_NULL:{
 			__in_ktvdp->value.null_val=NULL;
 			__in_ktvdp->field_type=__in_type;
+			break;
+		}
+		case FT_FLOAT:{
+			const float float_val=*((const float*)__in_value);
+			__in_ktvdp->value.float_val=float_val;
+			__in_ktvdp->field_type=__in_type;
+			break;
+		}
+		case FT_INTEGER64:{
+			const long long long_long_val=*((const long long*)__in_value);
+			__in_ktvdp->value.long_long_val=long_long_val;
+			__in_ktvdp->field_type=__in_type;
+			break;
+		}
+		case FT_DOUBLE:{
+			const double double_val=*((const double*)__in_value);
+			__in_ktvdp->value.double_val=double_val;
+			__in_ktvdp->field_type=__in_type;
+			break;
+		}
+		case FT_BOOLEAN:{
+			const unsigned char bool_val=*((const unsigned char*)__in_value);
+			__in_ktvdp->value.bool_val=bool_val;
+			__in_ktvdp->field_type=__in_type;
+			break;
+		}
+		case FT_SHORT:{
+			const short float_val=*((const short*)__in_value);
+			__in_ktvdp->value.float_val=float_val;
+			__in_ktvdp->field_type=__in_type;
+			break;
 		}
 	}
 	if (__in_description!=NULL){
@@ -335,6 +362,45 @@ EXTERN_C SETTING_API Status serialize_ktvdp(const pktvdp __in_ktvdp,char** __out
 			track+=4;
 			break;
 		}
+		case FT_INTEGER64:{
+			char int64_bytes[8];
+			long_long_to_bytes(__in_ktvdp->value.long_long_val,int64_bytes);
+			(*__out_pchar)=(char*)realloc((*__out_pchar),sizeof(char)*(track+8));
+			copy_mem((*__out_pchar),int64_bytes,0,8,track);
+			track+=8;
+			break;
+		}
+		case FT_FLOAT:{
+			char float_bytes[4];
+			float_to_bytes(__in_ktvdp->value.float_val,float_bytes);
+			(*__out_pchar)=(char*)realloc((*__out_pchar),sizeof(char)*(track+4));
+			copy_mem((*__out_pchar),float_bytes,0,4,track);
+			track+=4;
+			break;
+		}
+		case FT_DOUBLE:{
+			char double_bytes[8];
+			double_to_bytes(__in_ktvdp->value.double_val,double_bytes);
+			(*__out_pchar)=(char*)realloc((*__out_pchar),sizeof(char)*(track+8));
+			copy_mem((*__out_pchar),double_bytes,0,8,track);
+			track+=8;
+			break;
+		}
+		case FT_SHORT:{
+			char short_bytes[2];
+			short_to_bytes(__in_ktvdp->value.short_val,short_bytes);
+			(*__out_pchar)=(char*)realloc((*__out_pchar),sizeof(char)*(track+2));
+			copy_mem((*__out_pchar),short_bytes,0,2,track);
+			track+=2;
+			break;
+		}
+		case FT_NULL:{
+			(*__out_pchar)=(char*)realloc((*__out_pchar),sizeof(char)*(track+1));
+			char c='\0';
+			copy_mem((*__out_pchar),&c,0,1,track);
+			track+=1;
+			break;
+		}
 	}
 	
 	size_t string_length=strlen(__in_ktvdp->description);
@@ -348,7 +414,6 @@ EXTERN_C SETTING_API Status serialize_ktvdp(const pktvdp __in_ktvdp,char** __out
 	track+=(int)string_length+1;
 	
 	(*__out_puint)=track;
-	
 	
 	return Status_OK;
 }

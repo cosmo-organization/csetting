@@ -19,6 +19,7 @@
 #define FT_NULL 0xba
 #define FT_EMPTY 0xcb
 #define FT_BOOLEAN 0xed
+#define FT_INTEGER64 0xcf
 
 
 #if defined(_MSC_VER) || defined(WIN32)
@@ -65,6 +66,7 @@ typedef struct __KTVDP { //key, type, value and description pair
 		double double_val;
 		unsigned char bool_val;
 		float float_val;
+		long long long_long_val;
 	}value;
 	char* description;
 }ktvdp, * pktvdp, ** lpktvdp;
@@ -112,4 +114,5 @@ EXTERN_C SETTING_API Status create_setting(lpsetting __out_setting);
 EXTERN_C SETTING_API Status add_setting_profile(const psetting __in_setting,const psetting_profile __in_setting_profile);
 
 EXTERN_C SETTING_API Status serialize_ktvdp(const pktvdp __in_ktvdp,char** __out_pchar,unsigned int* __out_puint);
+EXTERN_C SETTING_API Status serialize_setting_profile(const psetting_profile __in_setting_profile,char** __out_pchar,int* __out_puint);
 #endif

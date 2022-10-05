@@ -13,7 +13,7 @@ int main(const int argc,const char** argv){
 				 "#define MLITTLE_ORDER 1\n"
 				 "#define MBIG_ORDER 0\n"
 				 "#define MBYTE_ORDER %s\n"
-				 "#endif\n",(flag==0x1)?"MLITTLE_ORDER":"MBIG_ORDER");
+				 "#endif",(flag==0x1)?"MLITTLE_ORDER":"MBIG_ORDER");
 	fclose(fptr);
 	printf("your machine is %s\n",(flag==0x1)?"little endian":"big endian");
 	return 0;

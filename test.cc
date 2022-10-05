@@ -30,8 +30,14 @@ bool compare_bytes(const char* array1,const char* array2){
 int main(const int argc,const char** argv){
 	
 	pktvdp test_ktvdp;
+	pktvdp string_ktvdp;
+	pktvdp int_ktvdp;
+	pktvdp short_ktvdp;
+	pktvdp float_ktvdp;
+	pktvdp double_ktvdp;
+	pktvdp int64_ktvdp;
 	
-	if (!create_ktvdp(&test_ktvdp)){
+	if (!create_ktvdp(&test_ktvdp)||!(create_ktvdp(&string_ktvdp)||!create_ktvdp(&int_ktvdp)||!create_ktvdp(&short_ktvdp))){
 		std::cerr<<"Failed to create ktvdp!"<<std::endl;
 		return 0x1;
 	}
